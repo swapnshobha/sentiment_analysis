@@ -1,4 +1,5 @@
 # Download necessary resources
+import nltk
 nltk.download('punkt')
 nltk.download('vader_lexicon')
 nltk.download('stopwords')
@@ -6,7 +7,6 @@ nltk.download('wordnet')
 
 import streamlit as st
 import pandas as pd
-import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
