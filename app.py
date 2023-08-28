@@ -19,7 +19,12 @@ import seaborn as sns
 from wordcloud import WordCloud
 from nltk import FreqDist
 
+# Set configurations
+st.set_page_config(page_title="Sentiment Analysis App", layout="wide")
 
+# Title and header
+st.title("Sentiment Analysis Dashboard")
+st.header("Exploring and Visualizing Sentiment Analysis")
 
 # File upload
 st.subheader("Upload CSV File")
@@ -33,12 +38,9 @@ if uploaded_file is not None:
     st.write("Number of rows and columns:", data.shape)
     st.write("Columns:", data.columns)
 
-# Set configurations
-st.set_page_config(page_title="Sentiment Analysis App", layout="wide")
 
-# Title and header
-st.title("Sentiment Analysis Dashboard")
-st.header("Exploring and Visualizing Sentiment Analysis")
+
+
 
 # Display basic information about the DataFrame
 st.subheader("Basic Information about the Data")
