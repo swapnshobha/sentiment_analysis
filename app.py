@@ -1,26 +1,25 @@
-# Download necessary resources
 import nltk
-nltk.download('punkt')
 nltk.download('vader_lexicon')
-nltk.download('stopwords')
 nltk.download('wordnet')
-
+nltk.download('punkt')
+nltk.download('stopwords')
 import streamlit as st
 import pandas as pd
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 import re
 import contractions
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 import string
 from collections import Counter
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import seaborn as sns
-from nltk.stem import WordNetLemmatizer
 from wordcloud import WordCloud
 from nltk import FreqDist
+
+
 
 # File upload
 st.subheader("Upload CSV File")
