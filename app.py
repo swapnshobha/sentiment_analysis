@@ -49,8 +49,15 @@ if uploaded_file is not None:
     # Display rating distribution
     st.subheader("Rating Distribution")
     rating_counts = data['reviews.rating'].value_counts().sort_index()
-    st.bar_chart(rating_counts)
-    
+    st.write(rating_counts)
+
+    plt.figure(figsize=(8, 5))
+    sns.barplot(x=rating_counts.index, y=rating_counts.values)
+    plt.xlabel('Rating')
+    plt.ylabel('Count')
+    plt.title('Rating Distribution')
+    st.pyplot(plt) 
+        
     # Display average sentiment by user ratings
     st.subheader("Average Sentiment by User Ratings")
     avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
