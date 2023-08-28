@@ -38,52 +38,46 @@ if uploaded_file is not None:
     st.write("Number of rows and columns:", data.shape)
     st.write("Columns:", data.columns)
 
+    # Display summary statistics for numerical columns
+    st.subheader("Summary Statistics for Numerical Columns")
+    st.write(data.describe())
 
+    # Check for missing values
+    st.subheader("Missing Values")
+    st.write(data.isnull().sum())
 
+    # Display rating distribution
+    st.subheader("Rating Distribution")
+    rating_counts = data['reviews.rating'].value_counts().sort_index()
+    st.bar_chart(rating_counts)
 
+    # Display sentiment distribution
+    st.subheader("Sentiment Distribution")
+    sentiment_distribution = data['sentiment_category'].value_counts()
+    st.pie_chart(sentiment_distribution)
 
-# Display basic information about the DataFrame
-st.subheader("Basic Information about the Data")
-st.write("Number of rows and columns:", data.shape)
-st.write("Columns:", data.columns)
+    # Display top 30 common words
+    st.subheader("Top 30 Most Common Words")
+    all_words = ' '.join(data['cleaned_reviews']).split()
+    word_freq = FreqDist(all_words)
+    st.bar_chart(word_freq.most_common(30))
 
-# Display summary statistics for numerical columns
-st.subheader("Summary Statistics for Numerical Columns")
-st.write(data.describe())
+    # Display average sentiment by user ratings
+    st.subheader("Average Sentiment by User Ratings")
+    avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
+    st.line_chart(avg_sentiment_by_rating)
 
-# Check for missing values
-st.subheader("Missing Values")
-st.write(data.isnull().sum())
+    # Display sentiment by category
+    st.subheader("Sentiment by Category")
+    category_sentiment = data.groupby(['Category', 'sentiment_category']).size().unstack()
+    st.bar_chart(category_sentiment)
 
-# Display rating distribution
-st.subheader("Rating Distribution")
-rating_counts = data['reviews.rating'].value_counts().sort_index()
-st.bar_chart(rating_counts)
+    # Display the original DataFrame
+    st.subheader("Original DataFrame")
+    st.write(data)
 
-# Display sentiment distribution
-st.subheader("Sentiment Distribution")
-sentiment_distribution = data['sentiment_category'].value_counts()
-st.pie_chart(sentiment_distribution)
-
-# Display top 30 common words
-st.subheader("Top 30 Most Common Words")
-all_words = ' '.join(data['cleaned_reviews']).split()
-word_freq = FreqDist(all_words)
-st.bar_chart(word_freq.most_common(30))
-
-# Display average sentiment by user ratings
-st.subheader("Average Sentiment by User Ratings")
-avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
-st.line_chart(avg_sentiment_by_rating)
-
-# Display sentiment by category
-st.subheader("Sentiment by Category")
-category_sentiment = data.groupby(['Category', 'sentiment_category']).size().unstack()
-st.bar_chart(category_sentiment)
-
-# Display the original DataFrame
-st.subheader("Original DataFrame")
-st.write(data)
+else:
+    st.warning("Please upload a CSV file.")
 
 # End with a footer
 st.markdown("---")
