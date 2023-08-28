@@ -81,8 +81,4 @@ else:
 
 # End with a footer
 st.markdown("---")
-st.write("Created with ❤️ by Your Name")
-
-# Run the app
-if __name__ == "__main__":
-    st.script_run()
+st.write("Created with ❤️ by Swarup Shinde")
