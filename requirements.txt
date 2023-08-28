@@ -1,7 +1,7 @@
-contractions==0.0.52
-nltk==3.6.3
-pandas==1.3.3
-wordcloud==1.8.1
-matplotlib==3.4.3
-seaborn==0.11.2
-streamlit==0.89.0
+contractions
+nltk
+pandas
+wordcloud
+matplotlib
+seaborn
+streamlit
