@@ -50,11 +50,16 @@ if uploaded_file is not None:
     st.subheader("Rating Distribution")
     rating_counts = data['reviews.rating'].value_counts().sort_index()
     st.bar_chart(rating_counts)
+    
+    # Display average sentiment by user ratings
+    st.subheader("Average Sentiment by User Ratings")
+    avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
+    st.line_chart(avg_sentiment_by_rating)
 
     # Display sentiment distribution
-    st.subheader("Sentiment Distribution")
-    sentiment_distribution = data['sentiment_category'].value_counts()
-    st.pie_chart(sentiment_distribution)
+    #st.subheader("Sentiment Distribution")
+    #sentiment_distribution = data['sentiment_category'].value_counts()
+    #st.pie_chart(sentiment_distribution)
 
     # Display top 30 common words
     st.subheader("Top 30 Most Common Words")
@@ -62,10 +67,7 @@ if uploaded_file is not None:
     word_freq = FreqDist(all_words)
     st.bar_chart(word_freq.most_common(30))
 
-    # Display average sentiment by user ratings
-    st.subheader("Average Sentiment by User Ratings")
-    avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
-    st.line_chart(avg_sentiment_by_rating)
+
 
     # Display sentiment by category
     st.subheader("Sentiment by Category")
