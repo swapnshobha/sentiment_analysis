@@ -51,6 +51,106 @@ if uploaded_file is not None:
     rating_counts = data['reviews.rating'].value_counts().sort_index()
     st.write(rating_counts)
 
+    plt.figure(figsize=(8, 5))
+    sns.barplot(x=rating_counts.index, y=rating_counts.values)
+    plt.xlabel('Rating')
+    plt.ylabel('Count')
+    plt.title('Rating Distribution')
+    st.pyplot(plt)
+
+    # Initialize the SentimentIntensityAnalyzer
+    sid = SentimentIntensityAnalyzer()
+
+
+    # Define the Lemmatizer
+    lemmatizer = WordNetLemmatizer()
+
+    def cleaner(text):
+        """
+        Clean and preprocess a given text using various steps.
+
+        This function applies a series of cleaning operations to the input text, including replacing contractions,
+        removing hashtags and Twitter handles, eliminating URLs, converting to lowercase, and lemmatizing words.
+
+        Args:
+            text (str): The input text to be cleaned.
+
+        Returns:
+            str: The cleaned and preprocessed text.
+        """
+        new_text = re.sub(r"'s\b", " is", text)
+        new_text = re.sub("#", "", new_text)
+        new_text = re.sub("@[A-Za-z0-9]+", "", new_text)
+        new_text = re.sub(r"http\S+", "", new_text)
+        new_text = contractions.fix(new_text)
+        new_text = re.sub(r"[^a-zA-Z]", " ", new_text)
+        new_text = new_text.lower().strip()
+
+        cleaned_text = ''
+        for token in new_text.split():
+            cleaned_text = cleaned_text + lemmatizer.lemmatize(token) + ' '
+
+        return cleaned_text
+
+    # Preprocessing function
+    def preprocess_text(text):
+        """
+        Preprocess a given text for further analysis.
+
+        This function takes the input text, applies the 'cleaner' function, tokenizes the cleaned text,
+        removes punctuation and stopwords, and then reconstructs the preprocessed text.
+
+        Args:
+            text (str): The input text to be preprocessed.
+
+        Returns:
+            str: The preprocessed text ready for analysis.
+        """
+        if isinstance(text, str):
+            # Apply your cleaner function
+            cleaned_text = cleaner(text)
+
+            # Tokenization
+            tokens = word_tokenize(cleaned_text)
+
+            # Remove punctuation
+            tokens = [token for token in tokens if token not in string.punctuation]
+
+            # Remove stopwords
+            stop_words = set(stopwords.words('english'))
+            tokens = [token for token in tokens if token not in stop_words]
+
+            # Reconstruct preprocessed text
+            preprocessed_text = ' '.join(tokens)
+            return preprocessed_text
+        else:
+            # If the input is not a string, return an empty string
+            return ''
+
+    # Apply preprocess_text to 'reviews.text' column
+    data['cleaned_reviews'] = data['reviews.text'].apply(preprocess_text)
+
+
+        # Function to classify sentiment
+    def classify_sentiment(score):
+        if score['compound'] > 0.6:
+            return 'positive'
+        elif score['compound'] < 0.1:
+            return 'negative'
+        else:
+            return 'neutral'
+    # Calculate sentiment scores using SentimentIntensityAnalyzer
+    data['sentiment_scores'] = data['cleaned_reviews'].apply(sid.polarity_scores)
+
+    # Classify sentiment based on scores
+    data['sentiment_category'] = data['sentiment_scores'].apply(classify_sentiment)
+
+
+    #data['compound'] = data['reviews.text'].apply(lambda x: sia.polarity_scores(x)['compound'])
+    data['compound'] = data['reviews.text'].apply(lambda x: SentimentIntensityAnalyzer().polarity_scores(x)['compound'])
+
+
+
     st.subheader("Sentiment Distribution")
     sentiment_distribution = data['sentiment_category'].value_counts()
     st.write(sentiment_distribution)
@@ -66,6 +166,7 @@ if uploaded_file is not None:
     st.plotly_chart(fig)
 
 
+    
     # Display top 30 common words
     st.subheader("Top 30 Most Common Words")
     all_words = ' '.join(data['cleaned_reviews']).split()
