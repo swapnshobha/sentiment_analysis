@@ -56,17 +56,17 @@ if uploaded_file is not None:
     plt.xlabel('Rating')
     plt.ylabel('Count')
     plt.title('Rating Distribution')
-    st.pyplot(plt) 
+    #st.pyplot(plt) 
         
     # Display average sentiment by user ratings
-    st.subheader("Average Sentiment by User Ratings")
-    avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
-    st.line_chart(avg_sentiment_by_rating)
+    #st.subheader("Average Sentiment by User Ratings")
+    #avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
+    #st.line_chart(avg_sentiment_by_rating)
 
     # Display sentiment distribution
-    #st.subheader("Sentiment Distribution")
-    #sentiment_distribution = data['sentiment_category'].value_counts()
-    #st.pie_chart(sentiment_distribution)
+    st.subheader("Sentiment Distribution")
+    sentiment_distribution = data['sentiment_category'].value_counts()
+    st.pie_chart(sentiment_distribution)
 
     # Display top 30 common words
     st.subheader("Top 30 Most Common Words")
