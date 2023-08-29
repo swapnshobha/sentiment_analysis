@@ -51,28 +51,19 @@ if uploaded_file is not None:
     rating_counts = data['reviews.rating'].value_counts().sort_index()
     st.write(rating_counts)
 
-    plt.figure(figsize=(8, 5))
-    sns.barplot(x=rating_counts.index, y=rating_counts.values)
-    plt.xlabel('Rating')
-    plt.ylabel('Count')
-    plt.title('Rating Distribution')
-    #st.pyplot(plt) 
-        
-    # Display average sentiment by user ratings
-    #st.subheader("Average Sentiment by User Ratings")
-    #avg_sentiment_by_rating = data.groupby('reviews.rating')['compound'].mean()
-    #st.line_chart(avg_sentiment_by_rating)
-
-    # Display sentiment distribution
     st.subheader("Sentiment Distribution")
     sentiment_distribution = data['sentiment_category'].value_counts()
-    st.pie_chart(sentiment_distribution)
+    st.write(sentiment_distribution)
 
-    # Display top 30 common words
-    st.subheader("Top 30 Most Common Words")
-    all_words = ' '.join(data['cleaned_reviews']).split()
-    word_freq = FreqDist(all_words)
-    st.bar_chart(word_freq.most_common(30))
+
+    import plotly.express as px
+
+
+    # Create a pie chart using Plotly
+    fig = px.pie(names=sentiment_distribution.index,values=sentiment_distribution.values,title='Sentiment Distribution')
+
+    # Display the pie chart using Streamlit
+    st.plotly_chart(fig)
 
 
 
