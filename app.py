@@ -66,11 +66,25 @@ if uploaded_file is not None:
     st.plotly_chart(fig)
 
 
+    # Display top 30 common words
+    st.subheader("Top 30 Most Common Words")
+    all_words = ' '.join(data['cleaned_reviews']).split()
+    word_freq = Counter(all_words)
 
-    # Display sentiment by category
-    st.subheader("Sentiment by Category")
-    category_sentiment = data.groupby(['Category', 'sentiment_category']).size().unstack()
-    st.bar_chart(category_sentiment)
+    # Generate the word cloud
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(word_freq)
+
+    # Display the word cloud using Matplotlib and Streamlit
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    st.pyplot(plt)
+
+    # Display top 30 common words
+    st.subheader("Top 30 Most Common Words")
+    all_words = ' '.join(data['cleaned_reviews']).split()
+    word_freq = FreqDist(all_words)
+    st.bar_chart(word_freq.most_common(30))
 
     # Display the original DataFrame
     st.subheader("Original DataFrame")
