@@ -181,12 +181,6 @@ if uploaded_file is not None:
     plt.axis('off')
     st.pyplot(plt)
 
-    # Display top 30 common words
-    st.subheader("Top 30 Most Common Words")
-    all_words = ' '.join(data['cleaned_reviews']).split()
-    word_freq = FreqDist(all_words)
-    st.bar_chart(word_freq.most_common(30))
-
     # Display the original DataFrame
     st.subheader("Original DataFrame")
     st.write(data)
